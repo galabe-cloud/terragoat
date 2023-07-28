@@ -1,0 +1,27 @@
+name: bridgecrew
+on:
+   pull_request:
+   push:
+     branches:
+       - master
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Run Prisma Cloud 
+        id: Prisma Cloud
+        uses: bridgecrewio/checkov-action@master 
+        with:
+          api-key: ${{ secrets.BC_API_KEY }}
+          directory: terraform/
+        #- name: upload SARIF file
+         # uses: github/codeql-action/upload-sarif@v2
+         # if: success() || failure()
+          #with:
+           # sarif_file: results.sarif
